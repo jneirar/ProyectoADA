@@ -1,0 +1,17 @@
+4 3
+aaa
+baa
+bac
+cbb
+
+aristas = 9
+permutación = 102
+
+4 3
+bbb
+abb
+abc
+caa
+
+aristas = 9
+permutación = 102
