@@ -22,3 +22,16 @@ ducldy
 ducamy
 yucaiy
 yucavy
+
+3 3
+aaa
+bab
+cab
+
+6 3
+aaa
+bab
+cab
+cbb
+dcb
+dcc
