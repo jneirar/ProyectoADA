@@ -20,6 +20,7 @@ bool sortP(pair<ll, ll> p1, pair<ll, ll> p2){
 }
 
 int main(){
+    //freopen("inBig1.txt", "r", stdin);
     //aaa, baa, bac, cbb
     //0 -> a,b,c    3
     //1 -> a,b      2
@@ -57,34 +58,37 @@ int main(){
     //aaa, baa, bac, cbb
     //102
     //aaa, aba, abc, bcb
-
+    
     vector<vector<ll>> sptrie(m * n + 1);                           
     for(ll i = 0; i < m * n + 1; i++)                                   //O(m*n)
         sptrie[i].resize(alf.size(), 0);                                //O(alfabeto) = O(1)
-        
+
+    unordered_map<char, ll> position;
+    for(ll i = 0; i < alf.size(); i++)  position[char(alf[i] + 'a')] = i;   //O(alfabeto)
+
     // De 0 a m-1
     ll parent = 0, node = 0;
     for(string s : cad){                                                //O(n * m)
         parent = 0; 
         for(char c : s){                                                //O(m)
-            if(sptrie[parent][c-'a'] == 0)                              //O(1)
+            if(sptrie[parent][position[c]] == 0)                              //O(1)
                 //No existe, la creamos                                 
-                sptrie[parent][c-'a'] = ++node;                         //O(1)
-            parent = sptrie[parent][c-'a'];                             //O(1)
+                sptrie[parent][position[c]] = ++node;                         //O(1)
+            parent = sptrie[parent][position[c]];                             //O(1)
         }
     } 
 
     //Print sptrie
-    cout << "i -> ";
+    /*cout << "i -> ";
     for(ll j = 0; j < alf.size(); j++)  cout << "\t" << char(alf[j]+'a');   cout << "\n";
     for(ll i=0; i<node; i++){
         cout << i << " ->";
         for(ll j=0; j<alf.size(); j++)  cout << "\t" << sptrie[i][j];
         cout << "\n";
-    }
+    }*/
     cout << "\nPermutation: ";
     for(ll i = 0; i < m; i++)                                       //O(m)
-        cout << permutation[i].first;
+        cout << permutation[i].first << " ";
     cout << "\n";
     //Print edges
     cout << "Aristas = " << node << "\n";
