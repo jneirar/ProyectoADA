@@ -22,12 +22,14 @@ ducldy
 ducamy
 yucaiy
 yucavy
+
 14
 
 3 3
 aaa
 bab
 cab
+
 6
 
 6 3
@@ -37,4 +39,5 @@ cab
 cbb
 dcb
 dcc
+
 13
