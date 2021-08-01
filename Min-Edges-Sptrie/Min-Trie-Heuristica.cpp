@@ -1,4 +1,5 @@
 #include <iostream>
+#include <array>
 #include <vector>
 #include <string>
 #include <utility>
@@ -11,6 +12,7 @@
 
 using namespace std;
 #define ll long long
+#define pll pair<ll, ll>
 
 const ll MOD = 1e9+7;
 
@@ -65,9 +67,31 @@ int main(){
 
     unordered_map<char, ll> position;
     for(ll i = 0; i < alf.size(); i++)  position[char(alf[i] + 'a')] = i;   //O(alfabeto)
-
+    ll node = 0;
+    queue<array<ll, 4>> q;
+    q.push({node++, 1, n, 0});
+    vector<ll> pos;
+    while(!q.empty()){
+        auto cur = q.front();
+        q.pop();
+        if(cur[3] >= m) continue;
+        pos.push_back(permutation[cur[3]].first);
+        ll k = cur[1];
+        char ck = cad[cur[1]-1][cur[3]];
+        for(ll i=cur[1]+1; i<=cur[2]; i++){
+            if(cad[i-1][cur[3]] != ck){
+                sptrie[cur[0]][position[ck]] = node;
+                q.push({node++, k, i-1, cur[3]+1});
+                k = i;
+                ck = cad[i-1][cur[3]];
+            }
+        }
+        sptrie[cur[0]][position[ck]] = node;
+        q.push({node++, k, cur[2], cur[3]+1});
+    }
+    
     // De 0 a m-1
-    ll parent = 0, node = 0;
+    /*ll parent = 0, node = 0;
     for(string s : cad){                                                //O(n * m)
         parent = 0; 
         for(char c : s){                                                //O(m)
@@ -76,21 +100,28 @@ int main(){
                 sptrie[parent][position[c]] = ++node;                         //O(1)
             parent = sptrie[parent][position[c]];                             //O(1)
         }
-    } 
-
+    } */
+    
+    ll edge = node - 1;
+    node = pos.size();
     //Print sptrie
-    /*cout << "i -> ";
+    cout << "i -> ";
     for(ll j = 0; j < alf.size(); j++)  cout << "\t" << char(alf[j]+'a');   cout << "\n";
     for(ll i=0; i<node; i++){
         cout << i << " ->";
         for(ll j=0; j<alf.size(); j++)  cout << "\t" << sptrie[i][j];
         cout << "\n";
-    }*/
+    }
     cout << "\nPermutation: ";
     for(ll i = 0; i < m; i++)                                       //O(m)
         cout << permutation[i].first << " ";
     cout << "\n";
+    cout << "node -> perm\n";
+    for(int i=0; i<pos.size(); i++){
+        cout << i << " -> " << pos[i] << endl;
+    }
+
     //Print edges
-    cout << "Aristas = " << node << "\n";
+    cout << "Aristas = " << edge << "\n";
     return 0;
 }

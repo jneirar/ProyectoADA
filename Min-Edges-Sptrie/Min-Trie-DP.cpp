@@ -37,11 +37,7 @@ int main(){
     resiz();
     for(ll i = 1; i <= n; i++)                                          //O(n*m)
         cin >> cad[i];                                  
-    for(ll i = 1; i <= n; i++){                                         //O(n*m)
-        KSize[i][i] = m;
-        for(ll p = 0; p < m; p++)
-            K[i][i][p] = 1;    
-    }
+
     for(ll i = 1; i < n; i++){                  //O(n*m)
         for(ll p = 0; p < m; p++){              //O(m)
             if(cad[i][p] == cad[i+1][p]){
@@ -199,19 +195,6 @@ int main(){
 }
 
 vector<ll> fillC(ll i, ll j, ll r){               //O(n)
-    //if(C1[i][j][r].size() > 0)  return;
-    /*ll idx = i;
-    char c = cad[i][r];
-    for(ll it = i+1; it <= j; it++){
-        if(c != cad[it][r]){
-            C1[i][j][r].push_back(idx);
-            C2[i][j][r].push_back(it-1);
-            idx = it;
-            c = cad[it][r];
-        }
-    }
-    C1[i][j][r].push_back(idx);
-    C2[i][j][r].push_back(j);*/
     vector<ll> ans;
     ll idx = i;
     char c = cad[i][r];
@@ -251,14 +234,9 @@ void resiz(){
             KSize[i][j] = 0;
         }
     }
-    /*C1.resize(n+1);
-    C2.resize(n+1);
-    for(ll i = 1; i <= n; i++){             //O(n^2*m)
-        C1[i].resize(n+1);
-        C2[i].resize(n+1);
-        for(ll j = 1; j <= n; j++){
-            C1[i][j].resize(m);
-            C2[i][j].resize(m);
-        }
-    }*/
+    for(ll i = 1; i <= n; i++){                                         //O(n*m)
+        KSize[i][i] = m;
+        for(ll p = 0; p < m; p++)
+            K[i][i][p] = 1;    
+    }
 }
