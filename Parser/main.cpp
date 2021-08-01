@@ -19,6 +19,8 @@ bool sortP(pair<ll, char> p1, pair<ll, char> p2){
 
 char charBase = '&';
 unordered_set<string> rulesNames;
+unordered_map< string, ll> rulesN;
+unordered_map< string, ll> rulesM;
 trieType tries;
 
 char getCar(string &rule){
@@ -77,15 +79,15 @@ void readTrie(fstream &file){
                 continue;
             }
             rulesNames.insert(rule);
-            ll n = getNumber(temporal);
-            ll m = getNumber(temporal);
+            rulesN[rule] = getNumber(temporal);
+            rulesM[rule] = getNumber(temporal);
             ll posSize = getNumber(temporal);
             vector<ll> pos;
             for(ll i=0; i<posSize; i++){
                 pos.push_back(getNumber(temporal));
             }
             ll edges = getNumber(temporal);
-            vector<vector<pair<ll,char>>> adj(edges+1);
+            vector<vector<pair<ll,char>>> adj(edges+1);//Hay edges + 1 nodos
 
             for(ll i=0; i<edges; i++){
                 ll nodeA = getNumber(temporal);
@@ -103,8 +105,26 @@ void readTrie(fstream &file){
     }
 }
 
-void read(fstream &file){ 
-    
+string getRuleConsulta(string &rule){
+    string temp = "";
+    string temp2 = "";
+    for(auto& c: rule){
+        if(c == '(')
+            break;
+        temp += c;
+    }
+    return temp;
+}
+
+string getCharsByRuleConsulta(string &rule){
+    string caracteres = "";
+    auto x = rule.find('(');
+    for(unsigned int i = x + 1; i < rule.size() - 1; ++i){
+        if(rule[i] != ',' && rule[i] != ' '){
+            caracteres += rule[i];
+        }
+    }
+    return caracteres;
 }
 
 int main()
@@ -114,22 +134,53 @@ int main()
     //string trieFile = "triesCompHeu.txt";
     string trieFile = "triesCompOpt.txt";
     string inputFile = "input.txt";
-    //string outputFile = "output.txt";
     trieF.open(trieFile, ios::in);
-    //offile.open(outputFile);
     readTrie(trieF);
-    for(auto regla : rulesNames){
-        cout << regla << "\n";
-        for(auto str : tries[regla])
-            cout << str << endl;
-        cout << "\n";
+    
+    
+    file.open(inputFile, ios::in);
+    if(file.is_open()){
+        string temporal;
+        while(getline(file, temporal)){
+            string rule = getRuleConsulta(temporal);
+            if(rulesNames.count(rule) == 0){
+                cout << "No existe regla " << rule << " para la consulta: " << temporal << "\n";
+                continue;
+            }
+            string consulta = getCharsByRuleConsulta(temporal);
+            //Xaa
+            if(consulta.size() != rulesM[rule]){
+                cout << "La consulta tiene muchos caracteres\n";
+                continue;
+            }
+            vector<char> res;
+            for(ll i = 0; i < rulesN[rule]; i++){
+                char resConsulta;
+                bool valid = true;
+                for(ll j = 0; j < rulesM[rule]; j++){
+                    if(consulta[j] == 'X')  resConsulta = tries[rule][i][j];
+                    else{
+                        if(consulta[j] != tries[rule][i][j]){
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+                if(valid)   res.push_back(resConsulta);
+            }
+            if(res.size() == 0) cout << "Consulta no encontrada\n";
+            for(ll i = 0; i < res.size(); i++){
+                cout << "X = " << res[i];
+                if(i != res.size() - 1)
+                    cout << ", ";
+                else
+                    cout << ".\n";
+            }
+        }
     }
-    //file.open(inputFile, ios::in);
-    //read(file);
-
-
+    
+    cout << "\nConsultas finalizadas\n";
+    file.close();
     trieF.close();
-    //file.close();
-    //offile.close();
     return 0;
 }

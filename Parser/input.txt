@@ -1,1 +1,3 @@
-prueba(X, a, a)
+prueba(X, a, b)
+duenho(d, X)
+duenho(X, a)
