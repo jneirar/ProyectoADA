@@ -16,107 +16,98 @@ using namespace std;
 
 const ll MOD = 1e9+7;
 const ll MAX = 1e9+7;
-vector<vector<unordered_set<ll>>> K;
-vector<vector<unordered_set<ll>>> R;
-vector<vector<vector<set<pll>>>> C;
+
+ll n, m;
+vector<string> cad;
+vector<vector<vector<bool>>> K;
+vector<vector<ll>> KSize;
+vector<vector<vector<vector<ll>>>> C1;
+vector<vector<vector<vector<ll>>>> C2;
+
+void fillC(ll i, ll j, ll r){
+    if(C1[i][j][r].size() > 0)  return;
+    ll idx = i;
+    char c = cad[i][r];
+    for(ll it = i+1; it <= j; it++){
+        if(c != cad[it][r]){
+            C1[i][j][r].push_back(idx);
+            C2[i][j][r].push_back(it-1);
+            idx = it;
+            c = cad[it][r];
+        }
+    }
+    C1[i][j][r].push_back(idx);
+    C2[i][j][r].push_back(j);
+}
+
 ll opt(ll i, ll j){
     if(i == j)  return 0;
     ll mn = LLONG_MAX;
-    for(auto r : R[i][j]){
+    for(ll r = 0; r < m; r++){   
+        if(K[i][j][r])  continue;
         ll loc = 0;
-        for(auto p : C[i][j][r])
-            loc += opt(p.first, p.second) + K[p.first][p.second].size() - K[i][j].size();
+        fillC(i, j, r);
+        for(ll k = 0; k < C1[i][j][r].size(); k++)
+            loc += opt(C1[i][j][r][k], C2[i][j][r][k]) + KSize[ C1[i][j][r][k] ][ C2[i][j][r][k] ] - KSize[i][j];
         mn = min(mn, loc);
     }
     return mn;
 }
 
 int main(){
-    //freopen("inBig1.txt", "r", stdin);
-    //aaa, baa, bac, cbb
-    //0 -> a,b,c    3
-    //1 -> a,b      2
-    //2 -> a,b,c    3
-    //102
-    ll n, m; cin >> n >> m;
-    
-    vector<string> cad(n+1);//1 a n
-    for(ll i = 1; i <= n; i++){                                          //O(n*m)
-        cin >> cad[i];                                  
-    }
-
+    cin >> n >> m;
+    //Resize
+    cad.resize(n+1);
     K.resize(n+1);
-    R.resize(n+1);
-    for(ll i = 1; i <= n; i++){
+    KSize.resize(n+1);
+    for(ll i = 0; i <= n; i++){             //O(n^2*m)
         K[i].resize(n+1);
-        R[i].resize(n+1);
-        for(ll p = 0; p < m; p++){
-            K[i][i].insert(p);    
+        KSize[i].resize(n+1);
+        for(ll j=0; j<=n; j++){
+            K[i][j].resize(m,0);
+            KSize[i][j] = 0;
         }
     }
-    for(ll i = 1; i < n; i++){
-        //i a i+1
-        for(ll p = 0; p < m; p++){
-            if(cad[i][p] == cad[i+1][p])
-                K[i][i+1].insert(p);
-            else
-                R[i][i+1].insert(p);
+    C1.resize(n+1);
+    C2.resize(n+1);
+    for(ll i = 1; i <= n; i++){
+        C1[i].resize(n+1);
+        C2[i].resize(n+1);
+        for(ll j = 1; j <= n; j++){
+            C1[i][j].resize(m);
+            C2[i][j].resize(m);
         }
     }
-    //(1,3) = (1,2) y (2,3)
-    //(2,5) = (2,3) y (3,5)
-    for(ll l = 2; l <= n-1; l++){
+    
+    
+    for(ll i = 1; i <= n; i++)                                          //O(n*m)
+        cin >> cad[i];                                  
+    for(ll i = 1; i <= n; i++){             //O(n*m)
+        KSize[i][i] = m;
+        for(ll p = 0; p < m; p++){
+            K[i][i][p] = 1;    
+        }
+    }
+    for(ll i = 1; i < n; i++){                  //O(n*m)
+        for(ll p = 0; p < m; p++){              //O(m)
+            if(cad[i][p] == cad[i+1][p]){
+                if(!K[i][i+1][p]) KSize[i][i+1]++;
+                K[i][i+1][p] = 1;
+            }
+        }
+    }
+    for(ll l = 2; l <= n-1; l++){               //O(n^2*m)
         for(ll i = 1; i <= n - l; i++){
             ll j = i + l;
-            //i, i+1 y i+1, j
             for(ll p = 0; p < m; p++){
-                if(K[i][i+1].count(p) && K[i+1][j].count(p))
-                    K[i][j].insert(p);
-                else
-                    R[i][j].insert(p);
-            }
-        }
-    }
-    /*for(ll i = 1; i <= n; i++){
-        for(ll j = i; j <= n; j++){
-            cout << i << "-" << j << "\n\t";
-            for(auto p : K[i][j])   cout << p << ",";   cout << "\n\t";
-            for(auto p : R[i][j])   cout << p << ",";   cout << endl;
-        }
-    }*/
-    C.resize(n+1);
-    for(ll i = 1; i <= n; i++){
-        C[i].resize(n+1);
-        for(ll j = 1; j <= n; j++){
-            C[i][j].resize(m);
-        }
-    }
-    for(ll i = 1; i <= n; i++){
-        for(ll j = i+1; j <= n; j++){
-            for(auto p : R[i][j]){
-                ll idx = i;
-                char c = cad[i][p];
-                for(ll ij = i+1; ij <= j; ij++){
-                    if(c != cad[ij][p]){
-                        C[i][j][p].insert({idx, ij-1});
-                        idx = ij;
-                        c = cad[ij][p];
-                    }
+                if(K[i][i+1][p] && K[i+1][j][p]){
+                    if(!K[i][j][p]) KSize[i][j]++;
+                    K[i][j][p] = 1;
                 }
-                C[i][j][p].insert({idx, j});
             }
         }
     }
-    /*while(1){
-        cout << "\nIngresa i j p: ";
-        ll i, j, p;
-        cin >> i >> j >> p;
-        for(auto p : C[i][j][p]){
-            cout << p.first << ", " << p.second << endl;
-        }
-    }*/
-
-    ll edges = opt(1, n) + K[1][n].size();
+    ll edges = opt(1, n) + KSize[1][n];
     cout << edges << endl;
     return 0;
 }
