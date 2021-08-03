@@ -11,17 +11,19 @@
 using namespace std;
 #define ll long long
 #define pll pair<ll, ll>
-#define trieType unordered_map< string, vector<string> >
-
-bool sortP(pair<ll, char> p1, pair<ll, char> p2){
-    return p1.first < p2.first;
-}
+#define plc pair<ll, char>
+#define vll vector<ll>
+#define vplc vector<plc>
+#define vvplc vector<vplc>
+#define trieType unordered_map< string, vvplc >
+#define triePosType unordered_map< string, vll >
 
 char charBase = '&';
 unordered_set<string> rulesNames;
 unordered_map< string, ll> rulesN;
 unordered_map< string, ll> rulesM;
 trieType tries;
+triePosType triesPos;
 
 char getCar(string &rule){
     char temp = rule[0];
@@ -51,22 +53,6 @@ string getRuleName(string &rule){
     return temp;
 }
 
-void dfs(vector<vector<pair<ll,char>>> adj, vector<ll> pos, vector<string> &cad, ll node, ll limit, string perm, string str = ""){
-    if(node >= limit){
-        string cadena = str;
-        for(ll i = 0; i < str.size(); i++)
-            cadena[perm[i] - '0'] = str[i];
-        cad.push_back(cadena);
-        return;
-    }
-    for(auto v : adj[node]){
-        if(v.first >= limit)
-            dfs(adj, pos, cad, v.first, limit, perm, str + v.second);
-        else
-            dfs(adj, pos, cad, v.first, limit, perm + to_string(pos[v.first]), str + v.second);
-    }
-}
-
 void readTrie(fstream &file){ 
     if(file.is_open()){
         string temporal;
@@ -87,20 +73,15 @@ void readTrie(fstream &file){
                 pos.push_back(getNumber(temporal));
             }
             ll edges = getNumber(temporal);
-            vector<vector<pair<ll,char>>> adj(edges+1);//Hay edges + 1 nodos
-
+            vvplc adj(edges+1);//Hay edges + 1 nodos
             for(ll i=0; i<edges; i++){
                 ll nodeA = getNumber(temporal);
                 ll nodeB = getNumber(temporal);
                 char caracter = getCar(temporal);
                 adj[nodeA].push_back({nodeB, caracter});
             }
-
-            for(auto vect : adj)    sort(begin(vect), end(vect), sortP);
-
-            vector<string> cad;
-            dfs(adj, pos, cad, 0, posSize, to_string(pos[0]));
-            tries[rule] = cad;
+            tries[rule] = adj;
+            triesPos[rule] = pos;
         }
     }
 }
@@ -127,6 +108,35 @@ string getCharsByRuleConsulta(string &rule){
     return caracteres;
 }
 
+void dfs(vector<vector<pair<ll,char>>> &adj, vector<ll> &pos, vector<char> &res, ll node, ll limit, string consulta, char possible = ' '){
+    //cout << "DFS en " << node << endl;
+    if(node >= limit){
+        if(possible == ' ')
+            cout << "\nAlgo falló\n";
+        else
+            res.push_back(possible);
+        return;
+    }
+    for(auto v : adj[node]){
+        //cout << "Consulta: " << consulta << " - pos consulta: " << consulta[pos[v.first]] << " - " << pos[v.first] << "\n";
+        //cout << v.second << "\n";
+        if(possible != ' '){
+            //Ya encontré X, debo verificar si llego hasta el final
+            if(consulta[pos[node]] == v.second){
+                dfs(adj, pos, res, v.first, limit, consulta, possible);
+            }
+        }else{
+            if(consulta[pos[node]] == 'X'){
+                dfs(adj, pos, res, v.first, limit, consulta, v.second);
+            }else{
+                if(consulta[pos[node]] == v.second){
+                    dfs(adj, pos, res, v.first, limit, consulta, possible);
+                }
+            }
+        }
+    }
+}
+
 int main()
 {
     fstream file, trieF;
@@ -136,7 +146,6 @@ int main()
     string inputFile = "input.txt";
     trieF.open(trieFile, ios::in);
     readTrie(trieF);
-    
     
     file.open(inputFile, ios::in);
     if(file.is_open()){
@@ -154,21 +163,12 @@ int main()
                 continue;
             }
             vector<char> res;
-            for(ll i = 0; i < rulesN[rule]; i++){
-                char resConsulta;
-                bool valid = true;
-                for(ll j = 0; j < rulesM[rule]; j++){
-                    if(consulta[j] == 'X')  resConsulta = tries[rule][i][j];
-                    else{
-                        if(consulta[j] != tries[rule][i][j]){
-                            valid = false;
-                            break;
-                        }
-                    }
-                }
-                if(valid)   res.push_back(resConsulta);
-            }
+            //SPTrie: tries[rule] = vector<vector<pair<ll, char>>>;
+            dfs(tries[rule], triesPos[rule], res, 0, triesPos[rule].size(), consulta);
+
+            cout << temporal << "\n\t";
             if(res.size() == 0) cout << "Consulta no encontrada\n";
+            
             for(ll i = 0; i < res.size(); i++){
                 cout << "X = " << res[i];
                 if(i != res.size() - 1)
@@ -179,6 +179,8 @@ int main()
         }
     }
     
+    
+
     cout << "\nConsultas finalizadas\n";
     file.close();
     trieF.close();
