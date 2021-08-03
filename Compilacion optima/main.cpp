@@ -68,7 +68,7 @@ int main()
     trie tri(y.first, y.second.size(), y.second[0].size(), y.second);
     tri.write(offile, outputFile);
   }
-  
+  cout << "\nArhivo generado\n";
   file.close();
   offile.close();
   return 0;
