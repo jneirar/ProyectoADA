@@ -48,7 +48,7 @@ void solve(){
         }   
         case 3:{    //Ejecución de consultas
             t0 = clock();
-            parser.queryExecuter("consultas.txt");
+            parser.queryExecuter("queries.txt");
             t1 = clock();
             tiempo = timeCalculate(t0, t1);
             cout << "\nExecution Time: " << tiempo << "\n";
