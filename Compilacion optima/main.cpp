@@ -4,7 +4,6 @@
 #include <string>
 #include <set>
 #include <unordered_map>
-
 #include "trie.h"
 
 using namespace std;
