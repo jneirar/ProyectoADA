@@ -19,12 +19,9 @@ const ll MOD = 1e9+7;
 const ll MAX = 1e9+7;
 
 ll n, m;
-
 vector<string> cad;
 vector<vector<vector<bool>>> K;
 vector<vector<ll>> KSize;
-//vector<vector<vector<vector<ll>>>> C1;
-//vector<vector<vector<vector<ll>>>> C2;
 vector<vector<ll>> dp;
 vector<vector<ll>> path;
 
@@ -66,13 +63,6 @@ int main(){
             for(ll r = 0; r < m; r++){              //O(m*(n+m))
                 if(K[i][j][r])  continue;
                 ll loc = 0;
-                /*fillC(i, j, r);                     //O(n)
-                for(ll k = 0; k < C1[i][j][r].size(); k++)              //O(m)
-                    loc += dp[ C1[i][j][r][k] ][ C2[i][j][r][k] ] + KSize[ C1[i][j][r][k] ][ C2[i][j][r][k] ] - KSize[i][j];
-                if(loc < mn){
-                    mn = loc;
-                    path[i][j] = r;
-                }*/
                 auto C = fillC(i, j, r);                     //O(n)
                 for(ll k = 0; k < C.size(); k+=2)
                     loc += dp[ C[k] ][ C[k+1] ] + KSize[ C[k] ][ C[k+1] ] - KSize[i][j];
@@ -86,13 +76,6 @@ int main(){
     }
     ll edges = dp[1][n] + KSize[1][n];
     
-
-/*    for(ll i = 1; i <= n; i++){
-        for(ll j = i; j <= n; j++){
-            cout << i << "-" << j << " : " << path[i][j] << endl;
-        }
-    }*/
-
     set<char> alf;
     for(ll i=1; i<=n; i++){
         for(ll j=0; j<m; j++){
@@ -126,7 +109,7 @@ int main(){
         ll nodePar = cur[0];
 
         bool continua = false;
-        //Asegurar que tenga K's pendientes
+        //Asegurar que tenga K's pendientes, si hay, y no están marcados, los pongo primero
         for(ll p=0; p<m; p++){
             //Si los caracteres no están marcados, y pertenece a K[][] entonces entra primero
             if(!posUsed[ cur[1] ][p] && K[cur[1]][cur[2]][p]){

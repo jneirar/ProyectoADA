@@ -195,10 +195,6 @@ public:
     void print(){
         cout << "\nSPTRIE: " << endl;
         cout << "\t";
-        /*
-        for(auto c : alf){
-            cout << c << "\t";
-        }*/
         cout << endl;
         for(ll i=0; i<=nodo; i++){
             //  cout << i << "\t";

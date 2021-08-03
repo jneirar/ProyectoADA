@@ -25,8 +25,8 @@ public:
         charByPosition.resize(m);    
         sptrie.resize(m * n + 1);
         for(ll i = 0; i < n; i++)                          
-        for(ll j = 0; j < m; j++)                                       //O(m)
-            charByPosition[j].insert(cad[i][j]-'a');                    //O(1)
+            for(ll j = 0; j < m; j++)                                       //O(m)
+                charByPosition[j].insert(cad[i][j]-'a');                    //O(1)
         
 
         for(ll i = 0; i < m; i++)                                           //O(m)
