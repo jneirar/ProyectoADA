@@ -42,7 +42,7 @@ public:
                 }
                 string consulta = getCharsByRuleConsulta(temporal);
                 if(consulta.size() != rulesM[rule]){
-                    cout << "La consulta tiene muchos caracteres\n";
+                    cout << "La consulta tiene una cantidad de caracteres distinta a la regla\n";
                     continue;
                 }
                 vector<char> res;
@@ -126,12 +126,15 @@ public:
                 }
                 ll edges = getNumber(temporal);
                 if(edges <= 0){
-                    cout << "\nEdges <= 0>\n";
+                    cout << "\nAristas negativas\n";
                     continue;
                 }
                 vvplc adj(edges+1);//Hay edges + 1 nodos
                 for(ll i=0; i<edges; i++){
-                    if(temporal.size()==0) break;
+                    if(temporal.size()==0){
+                        cout << "Incorrecto, se quedo en " << i << " debio llegar a " << edges - 1 << "\n";
+                        break;
+                    } 
                     ll nodeA = getNumber(temporal);
                     ll nodeB = getNumber(temporal);
                     char caracter = getCar(temporal);

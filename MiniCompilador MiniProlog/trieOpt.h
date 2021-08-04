@@ -55,7 +55,7 @@ public:
                 }
             }
         }
-        
+        ll cont = 0;
         for(ll i = 1; i <= n; i++)  dp[i][i] = 0;       //O(n)
         for(ll l = 2; l <= n; l++){                     //O(n^2*m*(n+m))
             for(ll i = 1; i <= n - l + 1; i++){         //O(n*m*(n+m))
@@ -72,7 +72,10 @@ public:
                         path[i][j] = r;
                     }
                 }
-                dp[i][j] = mn;
+                if(mn != LLONG_MAX)
+                    dp[i][j] = mn;
+                else
+                    cout << "DP: Cadenas iguales en " << i << " " << j << "\n";
             }
         }
         edges = dp[1][n] + KSize[1][n];
@@ -176,7 +179,7 @@ public:
             dp[i].resize(n+1);
             path[i].resize(n+1);
             for(ll j = 1; j <= n; j++){
-                dp[i][j] = -1;
+                dp[i][j] = 0;
                 path[i][j] = -1;
             }
         }

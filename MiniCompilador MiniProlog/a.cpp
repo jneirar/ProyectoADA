@@ -2,13 +2,42 @@
 
 int main(){
     srand (time(NULL));
-    ofstream file;
+    fstream file;
+    string input = "in.txt";
+    ofstream fileO;
     string outputFile = "rules.txt";
-    file.open(outputFile);
+    file.open(input);
+    fileO.open(outputFile);
+
+    vector<string> cadenas;
+    if(file.is_open()){
+        string temporal;
+        while(getline(file, temporal)){
+            cadenas.push_back(temporal);
+        }
+    }
+
+    for(auto s : cadenas){
+        fileO << "Regla" << "(";
+        for(ll i = 0; i < s.length(); i++){
+            fileO << s[i];
+            if(i != s.length() - 1)
+                fileO << ", ";
+            else
+                fileO << ")\n";            
+        }
+    }
+
+
+
+
+    /*
+    
+    
     string regla = "Regla";
-    int n, m, ran;
+    int n, m;
     cout << "Ingrese: ";
-    cin >> n >> m >> ran;
+    cin >> n >> m;
     vector<string> cadenas(n);
 
     vector<ll> alfabeto;
@@ -21,7 +50,7 @@ int main(){
         vector<ll> veces;
         ll sum = 0;
         while(sum < n){
-            ll a = rand() % ran + 1; //(1 a 50)
+            ll a = rand() % 50 + 1; //(1 a 20)
             if(sum + a < n)
                 veces.push_back(a);
             else
@@ -39,17 +68,19 @@ int main(){
             int choose;
             choose = rand() % tomados.size();
             cout << v << " - " << char(choose+'a')  << " idx: " << idx << endl;
-            for(ll i = 0; i < v; i++)
+            for(ll i = 0; i < v; i++){
                 cadenas[i+idx] += char(choose+'a');
+                //cadenas[i][m] = char(choose+'a');
+            }
             idx += v;
             if(tomados.size() != 1){
                 tomados.erase(choose);
             }
         }
     }
-    unordered_set<string> setCad;
+    set<string> verifica;
     for(auto s : cadenas){
-        if(setCad.find(s) != setCad.end())  continue;
+        verifica.insert(s);
         file << regla << "(";
         for(ll i = 0; i < s.length(); i++){
             file << s[i];
@@ -58,9 +89,8 @@ int main(){
             else
                 file << ")\n";            
         }
-        setCad.insert(s);
     }
-    cout << "\n" << cadenas.size() - setCad.size() << " repetidos\n";
+    if(verifica.size() != n)    cout << "ERROR DE CREACIÓN\n";*/
     cout << "\nCreado correctamente\n";
     return 0;
 }

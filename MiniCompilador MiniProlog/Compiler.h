@@ -9,6 +9,7 @@ class Compiler{
     vector<string> rules;
     set<string> rulesNames;
     unordered_map<string, vector<string>> mapa;
+    unordered_map<string, unordered_set<string>> mapaCheck;
 public:
     Compiler(){
         cout << "\nCompilador creado\n";
@@ -18,6 +19,7 @@ public:
         rules.clear();
         rulesNames.clear();
         mapa.clear();
+        mapaCheck.clear();
         fstream file;
         ofstream offile;
 
@@ -74,8 +76,13 @@ public:
                 if(rulesNames.find(getRuleName(temporal)) == rulesNames.end()){
                     rulesNames.insert(getRuleName(temporal));
                     mapa[getRuleName(temporal)].push_back(getCharsByRule(temporal));
+                    mapaCheck[getRuleName(temporal)].insert(getCharsByRule(temporal));
                 }else{
-                    mapa[getRuleName(temporal)].push_back(getCharsByRule(temporal));
+                    string chars = getCharsByRule(temporal);
+                    if(mapaCheck[getRuleName(temporal)].find(chars) == mapaCheck[getRuleName(temporal)].end()){
+                        mapa[getRuleName(temporal)].push_back(chars);
+                        mapaCheck[getRuleName(temporal)].insert(chars);
+                    }
                 }
             }
         }
