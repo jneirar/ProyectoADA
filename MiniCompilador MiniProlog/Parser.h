@@ -41,7 +41,6 @@ public:
                     continue;
                 }
                 string consulta = getCharsByRuleConsulta(temporal);
-                //Xaa
                 if(consulta.size() != rulesM[rule]){
                     cout << "La consulta tiene muchos caracteres\n";
                     continue;
@@ -128,6 +127,7 @@ public:
                 ll edges = getNumber(temporal);
                 vvplc adj(edges+1);//Hay edges + 1 nodos
                 for(ll i=0; i<edges; i++){
+                    if(temporal.size()==0) break;
                     ll nodeA = getNumber(temporal);
                     ll nodeB = getNumber(temporal);
                     char caracter = getCar(temporal);
@@ -164,19 +164,13 @@ public:
     }
 
     void dfs(vector<vector<pair<ll,char>>> &adj, vector<ll> &pos, vector<char> &res, ll node, ll limit, string consulta, char possible = ' '){
-        //cout << "DFS en " << node << endl;
         if(node >= limit){
-            if(possible == ' ')
-                cout << "\nAlgo falló\n";
-            else
+            if(possible != ' ')
                 res.push_back(possible);
             return;
         }
         for(auto v : adj[node]){
-            //cout << "Consulta: " << consulta << " - pos consulta: " << consulta[pos[v.first]] << " - " << pos[v.first] << "\n";
-            //cout << v.second << "\n";
             if(possible != ' '){
-                //Ya encontré X, debo verificar si llego hasta el final
                 if(consulta[pos[node]] == v.second){
                     dfs(adj, pos, res, v.first, limit, consulta, possible);
                 }

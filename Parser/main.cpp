@@ -109,17 +109,12 @@ string getCharsByRuleConsulta(string &rule){
 }
 
 void dfs(vector<vector<pair<ll,char>>> &adj, vector<ll> &pos, vector<char> &res, ll node, ll limit, string consulta, char possible = ' '){
-    //cout << "DFS en " << node << endl;
     if(node >= limit){
-        if(possible == ' ')
-            cout << "\nAlgo falló\n";
-        else
+        if(possible != ' ')
             res.push_back(possible);
         return;
     }
     for(auto v : adj[node]){
-        //cout << "Consulta: " << consulta << " - pos consulta: " << consulta[pos[v.first]] << " - " << pos[v.first] << "\n";
-        //cout << v.second << "\n";
         if(possible != ' '){
             //Ya encontré X, debo verificar si llego hasta el final
             if(consulta[pos[node]] == v.second){
@@ -140,8 +135,6 @@ void dfs(vector<vector<pair<ll,char>>> &adj, vector<ll> &pos, vector<char> &res,
 int main()
 {
     fstream file, trieF;
-    //ofstream offile;
-    //string trieFile = "triesCompHeu.txt";
     string trieFile = "triesCompOpt.txt";
     string inputFile = "input.txt";
     trieF.open(trieFile, ios::in);
@@ -157,7 +150,6 @@ int main()
                 continue;
             }
             string consulta = getCharsByRuleConsulta(temporal);
-            //Xaa
             if(consulta.size() != rulesM[rule]){
                 cout << "La consulta tiene muchos caracteres\n";
                 continue;
@@ -178,9 +170,6 @@ int main()
             }
         }
     }
-    
-    
-
     cout << "\nConsultas finalizadas\n";
     file.close();
     trieF.close();
