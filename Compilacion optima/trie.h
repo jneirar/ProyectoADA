@@ -244,54 +244,28 @@ class trie {
     };
 
   void write(ofstream &file, string &outputName){
-    /*file << name << "{\n";
-    file << "n=" << n << "\n";
-    file << "m=" << m << "\n";
-    file << "Alf" << "=[";
-    for(auto c : alf)
-      file << c;
-    file << "]\n";
-    file << "Perm=[\n";
-    for(ll i=0; i<pos.size(); i++)
-        file << i << " " << pos[i] << "\n";
-    file << "]\n";
-    file << "Rules[\n";
-    for(ll i=0; i<=nodo; i++){
-      for(auto c : alf){
-        if(sptrie[i][posAlf[c]] != 0)
-          file << i << " " <<sptrie[i][posAlf[c]] << " "<< c  << "\n";
-      }
-    }
-    file << "]\n";
-    file << "}\n";
-    */
     char charBase = '&';
-    file << name << charBase << n << charBase << m << charBase << pos.size() << charBase;
-    for(ll i=0; i<pos.size(); i++){
-        file << pos[i];
-        if(i != pos.size()-1)   file << charBase;
-        else file << charBase;
-    }
-    file << edges << charBase;
-    for(ll i=0; i<=nodo; i++){
-      //Ordenar de acuerdo al número
-        //priority_queue<pair<ll, char>, vector<pair<ll, char>>, greater<pair<ll, char>>> pq;
-        priority_queue< pair<ll, char> , vector< pair<ll, char> >, PairComparator<ll, char> > pq;
+        file << name << charBase << n << charBase << m << charBase << pos.size() << charBase;
+        for(ll i=0; i<pos.size(); i++){
+            file << pos[i];
+            if(i != pos.size()-1)   file << charBase;
+            else file << charBase;
+        }
+        file << edges << charBase;
+        for(ll i=0; i<=nodo; i++){
+            //Ordenar de acuerdo al número
+            priority_queue< pair<ll, char> , vector< pair<ll, char> >, PairComparator<ll, char> > pq;
 
-        for(auto c : alf){
-            
-            /*if(sptrie[i][posAlf[c]] != 0){
-                file << i << charBase << sptrie[i][posAlf[c]] << charBase << c  << charBase;
-            }*/
-            if(sptrie[i][posAlf[c]] != 0)
-                pq.push(make_pair(sptrie[i][posAlf[c]], c));    
+            for(auto c : alf){
+                if(sptrie[i][posAlf[c]] != 0)
+                    pq.push(make_pair(sptrie[i][posAlf[c]], c));    
+            }
+            while(!pq.empty()){
+                file << i << charBase << pq.top().first << charBase << pq.top().second << charBase;
+                pq.pop();
+            }
         }
-        while(!pq.empty()){
-            file << i << charBase << pq.top().first << charBase << pq.top().second << charBase;
-            pq.pop();
-        }
-    }
-    file << "\n";
+        file << "\n";
   }
 };
 

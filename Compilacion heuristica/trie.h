@@ -121,6 +121,13 @@ class trie{
         cout << "Aristas = " << edges << "\n";
     }
 
+    template< typename F, typename S >
+    struct PairComparator {
+    bool operator()( const pair<F, S>& p1, const pair<F, S>& p2 ) const {  
+            return p1.first > p2.first;
+        }
+    };
+    
     void write(ofstream &file, string &outputName){
         char charBase = '&';
         file << name << charBase << n << charBase << m << charBase << pos.size() << charBase;
@@ -131,9 +138,17 @@ class trie{
         }
         file << edges << charBase;
         for(ll i=0; i<node; i++){
-          for(ll j=0; j<alf.size(); j++)  
-            if(sptrie[i][j] != 0)
-              file << i  << charBase << sptrie[i][j] << charBase << char(alf[j]+'a') << charBase;
+            //Ordenar de acuerdo al número
+            priority_queue< pair<ll, char> , vector< pair<ll, char> >, PairComparator<ll, char> > pq;
+
+            for(ll j=0; j<alf.size(); j++)
+                if(sptrie[i][j] != 0)
+                    pq.push(make_pair(sptrie[i][j], char(alf[j]+'a')));
+
+            while(!pq.empty()){
+                file << i << charBase << pq.top().first << charBase << pq.top().second << charBase;
+                pq.pop();
+            }
         }
         file << "\n";
     }
