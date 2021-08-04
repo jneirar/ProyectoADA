@@ -125,6 +125,10 @@ public:
                     pos.push_back(getNumber(temporal));
                 }
                 ll edges = getNumber(temporal);
+                if(edges <= 0){
+                    cout << "\nEdges <= 0>\n";
+                    continue;
+                }
                 vvplc adj(edges+1);//Hay edges + 1 nodos
                 for(ll i=0; i<edges; i++){
                     if(temporal.size()==0) break;

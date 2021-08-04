@@ -21,7 +21,7 @@ int main(){
         vector<ll> veces;
         ll sum = 0;
         while(sum < n){
-            ll a = rand() % 50 + 1; //(1 a 20)
+            ll a = rand() % 50 + 1; //(1 a 50)
             if(sum + a < n)
                 veces.push_back(a);
             else
@@ -49,9 +49,7 @@ int main(){
             }
         }
     }
-    set<string> verifica;
     for(auto s : cadenas){
-        verifica.insert(s);
         file << regla << "(";
         for(ll i = 0; i < s.length(); i++){
             file << s[i];
@@ -61,7 +59,6 @@ int main(){
                 file << ")\n";            
         }
     }
-    if(verifica.size() != n)    cout << "ERROR DE CREACIÓN\n";
     cout << "\nCreado correctamente\n";
     return 0;
 }
