@@ -34,6 +34,9 @@ bool sortP(pair<ll, ll> p1, pair<ll, ll> p2){
     if(p1.second == p2.second)  return p1.first < p2.first;
     return p1.second < p2.second;
 }
+bool sortPLLC(pair<ll, char> p1, pair<ll, char> p2){
+    return p1.first < p2.first;
+}
 
 template< typename F, typename S >
 struct PairComparator {

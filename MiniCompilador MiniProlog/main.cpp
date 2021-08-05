@@ -22,7 +22,7 @@ int main()
 
 void solve(){
     int opt1 = menu1();
-    if(opt1 == 6){
+    if(opt1 == 7){
         flag = 0;
         return;
     }
@@ -58,7 +58,14 @@ void solve(){
             parser.showRules();
             break;
         }
-        case 5:{    //Elimina regla
+        case 5:{    //Mostrar caracteres de una regla
+            cout << "Inserte regla a mostrar: ";
+            string r;
+            cin >> r;
+            parser.showRule(r);
+            break;
+        }
+        case 6:{    //Elimina regla
             cout << "Inserte regla a eliminar: ";
             string r;
             cin >> r;
@@ -69,15 +76,16 @@ void solve(){
 }
 
 int menu1(){
-    int opt = 0, optMax = 6;
+    int opt = 0, optMax = 7;
     do{
         cout << "\n\n--------------------Proyecto de Analisis y Disenho de Algoritmos--------------------\n";
         cout << "1. Compilacion heuristica.\n";
         cout << "2. Compilacion optima.\n";
         cout << "3. Ejecutar consultas.\n";
         cout << "4. Mostrar reglas en memoria.\n";
-        cout << "5. Borrar regla.\n";
-        cout << "6. Salir del programa.\n";
+        cout << "5. Mostrar cadenas de una regla.\n";
+        cout << "6. Borrar regla.\n";
+        cout << "7. Salir del programa.\n";
         cout << "Ingrese una opcion: ";
         cin >> opt;
     }while(!isdigit(opt) && (opt < 1 || opt > optMax) );
