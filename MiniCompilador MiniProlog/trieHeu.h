@@ -53,11 +53,18 @@ public:
         
         for(ll i = 0; i < alf.size(); i++)  position[char(alf[i] + 'a')] = i;   //O(alfabeto)
         node = 0;
+        /*for(auto s : cad){
+            cout << s << "\n";
+        }
+        cout << "Permutation: ";
+        for(auto p : permutation)   cout << p.first;    cout << endl;
+
+        cout << "\nCreación nodos:\n";*/
 
         q.push({node++, 1, n, 0});
-
         while(!q.empty()){
             auto cur = q.front();
+            //cout << cur[0] << " " << cur[1] << " " << cur[2] << " " << cur[3] << "\n";
             q.pop();
             if(cur[3] >= m) continue;
             pos.push_back(permutation[cur[3]].first);

@@ -6,7 +6,6 @@
 #include "trieOpt.h"
 
 class Compiler{
-    vector<string> rules;
     set<string> rulesNames;
     unordered_map<string, vector<string>> mapa;
     unordered_map<string, unordered_set<string>> mapaCheck;
@@ -16,7 +15,6 @@ public:
     }
 
     void compile(string inputFile, bool opt){
-        rules.clear();
         rulesNames.clear();
         mapa.clear();
         mapaCheck.clear();
@@ -36,9 +34,11 @@ public:
             if(opt){
                 trieOpt tri(y.first, y.second.size(), y.second[0].size(), y.second);
                 tri.write(offile, outputFile);
+                //tri.print();
             }else{
                 trieHeu tri(y.first, y.second.size(), y.second[0].size(), y.second);
                 tri.write(offile, outputFile);
+                //tri.print();
             }
         }
         cout << "\nCompilacion terminada\n";
@@ -46,33 +46,20 @@ public:
         offile.close();
     }
 
-    string getRuleName(string &rule){
-        string temp = "";
-        string temp2 = "";
-        for(auto& c: rule){
-            if(c == '(')
-                break;
-            temp += c;
-        }
-        return temp;
+    string getRuleName(string rule){
+        auto x = rule.find(' ');
+        return rule.substr(0, x);
     }
 
-    string getCharsByRule(string &rule){
-        string caracteres = "";
-        auto x = rule.find('(');
-        for(unsigned int i = x + 1; i < rule.size() - 1; ++i){
-            if(rule[i] != ',' && rule[i] != ' '){
-                caracteres += rule[i];
-            }
-        }
-        return caracteres;
+    string getCharsByRule(string rule){
+        auto x = rule.find(' ');
+        return rule.substr(x+1, rule.size());
     }
 
     void read(fstream &file){ 
         if(file.is_open()){
             string temporal;
             while(getline(file, temporal)){
-                rules.push_back(temporal);
                 if(rulesNames.find(getRuleName(temporal)) == rulesNames.end()){
                     rulesNames.insert(getRuleName(temporal));
                     mapa[getRuleName(temporal)].push_back(getCharsByRule(temporal));

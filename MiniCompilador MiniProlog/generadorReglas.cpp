@@ -32,32 +32,25 @@ int main(){
         }
         if(sum < n) veces.push_back(n-sum);
         ll idx = 0;
-        set<ll> tomados;
-        for(ll k = 0; k < 26; k++)  tomados.insert(k);
+        vector<ll> tomados;
+        for(ll k = 0; k < 26; k++)  tomados.push_back(k);
         cout << j << " 2:\n";
         for(auto v : veces){
             int choose;
             choose = rand() % tomados.size();
-            cout << v << " - " << char(choose+'a')  << " idx: " << idx << endl;
+            cout << v << " - " << char(tomados[choose]+'a')  << " idx: " << idx << endl;
             for(ll i = 0; i < v; i++)
-                cadenas[i+idx] += char(choose+'a');
+                cadenas[i+idx] += char(tomados[choose]+'a');
             idx += v;
             if(tomados.size() != 1){
-                tomados.erase(choose);
+                tomados.erase(tomados.begin()+choose);
             }
         }
     }
     unordered_set<string> setCad;
     for(auto s : cadenas){
         if(setCad.find(s) != setCad.end())  continue;
-        file << regla << "(";
-        for(ll i = 0; i < s.length(); i++){
-            file << s[i];
-            if(i != s.length() - 1)
-                file << ", ";
-            else
-                file << ")\n";            
-        }
+        file << regla << " " << s << "\n";
         setCad.insert(s);
     }
     cout << "\n" << cadenas.size() - setCad.size() << " repetidos\n";
