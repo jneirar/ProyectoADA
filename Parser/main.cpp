@@ -86,26 +86,19 @@ void readTrie(fstream &file){
     }
 }
 
-string getRuleConsulta(string &rule){
-    string temp = "";
-    string temp2 = "";
-    for(auto& c: rule){
-        if(c == '(')
-            break;
-        temp += c;
-    }
-    return temp;
+string getCharsByRule(string rule){
+    auto x = rule.find(' ');
+    return rule.substr(x+1, rule.size());
 }
 
-string getCharsByRuleConsulta(string &rule){
-    string caracteres = "";
-    auto x = rule.find('(');
-    for(unsigned int i = x + 1; i < rule.size() - 1; ++i){
-        if(rule[i] != ',' && rule[i] != ' '){
-            caracteres += rule[i];
-        }
-    }
-    return caracteres;
+string getRuleConsulta(string rule){
+    auto x = rule.find(' ');
+    return rule.substr(0, x);
+}
+
+string getCharsByRuleConsulta(string rule){
+    auto x = rule.find(' ');
+    return rule.substr(x+1, rule.size());
 }
 
 void dfs(vector<vector<pair<ll,char>>> &adj, vector<ll> &pos, vector<char> &res, ll node, ll limit, string consulta, char possible = ' '){

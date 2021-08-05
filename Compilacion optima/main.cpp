@@ -13,26 +13,14 @@ set<string> rulesNames;
 vector<string> chars;
 unordered_map<string, vector<string>> mapa;
 
-string getRuleName(string &rule){
-    string temp = "";
-    string temp2 = "";
-    for(auto& c: rule){
-        if(c == '(')
-            break;
-        temp += c;
-    }
-    return temp;
+string getRuleName(string rule){
+    auto x = rule.find(' ');
+    return rule.substr(0, x);
 }
 
-string getCharsByRule(string &rule){
-    string caracteres = "";
-    auto x = rule.find('(');
-    for(unsigned int i = x + 1; i < rule.size() - 1; ++i){
-        if(rule[i] != ',' && rule[i] != ' '){
-            caracteres += rule[i];
-        }
-    }
-    return caracteres;
+string getCharsByRule(string rule){
+    auto x = rule.find(' ');
+    return rule.substr(x+1, rule.size());
 }
 
 void read(fstream &file, string &inputName){ 

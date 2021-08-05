@@ -1,18 +1,18 @@
-duenho(a, b)
-duenho(a, c)
-duenho(a, d)
-duenho(b, a)
-duenho(c, a)
-hermanos(a, b, c, d)
-hermanos(a, c, d, a)
-prueba(a, a, a)
-prueba(b, a, b)
-prueba(c, a, b)
-prueba(c, b, b)
-prueba(d, c, b)
-prueba(d, c, c)
-dificil(d, p, c, l, d, y)
-dificil(d, u, c, l, d, y)
-dificil(d, u, c, a, m, y)
-dificil(y, u, c, a, i, y)
-dificil(y, u, c, a, v, y)
+duenho ab
+duenho ac
+duenho ad
+duenho ba
+duenho ca
+hermanos abcd
+hermanos acda
+prueba aaa
+prueba bab
+prueba cab
+prueba cbb
+prueba dcb
+prueba dcc
+dificil dpcldy
+dificil ducldy
+dificil ducamy
+dificil yucaiy
+dificil yucavy

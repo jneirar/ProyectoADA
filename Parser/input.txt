@@ -1,19 +1,19 @@
-prueba(X, a, a)
-prueba(X, b, b)
-prueba(X, c, b)
-prueba(X, c, c)
-prueba(X, a, b)
-prueba(X, a, c)
-prueba(X, a, d)
-prueba(d, X, a)
-prueba(d, X, b)
-prueba(d, X, c)
-prueba(d, c, X)
-duenho(a, X)
-duenho(b, X)
-duenho(c, X)
-duenho(d, X)
-duenho(X, a)
-duenho(X, b)
-duenho(X, c)
-duenho(X, d)
+prueba Xaa
+prueba Xbb
+prueba Xcb
+prueba Xcc
+prueba Xab
+prueba Xac
+prueba Xad
+prueba dXa
+prueba dXb
+prueba dXc
+prueba dcX
+duenho aX
+duenho bX
+duenho cX
+duenho dX
+duenho Xa
+duenho Xb
+duenho Xc
+duenho Xd
